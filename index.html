@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html ng-app ="angBookWizardAPI">
+<head >
+	<title>BookWizard</title>
+	<link href='http://fonts.googleapis.com/css?family=Shadows+Into+Light|Metal+Mania|Roboto|Open+Sans' rel='stylesheet' type='text/css'>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="css/main.css" type="text/css" charset="utf-8" >
+	<link rel="stylesheet" href="css/responsive.css">	
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript" src="js/angular-sanitize.min.js"></script>
+</head>
+<body ng-controller="appController">
+	<header>
+		<h1>Book Wizards.com</h1>
+		<div id="searchBlock">
+			<form action="#">
+				<input type="text" id="searchBookField" placeholder="Enter Book category,Title or Author" ng-model="bookName">
+				<input type="submit" value="Search" id="searchButton" ng-click="validate(false)">
+			</form>	
+		<p id="resultStatus" ng-model="resultStatus" ng-show="resultStatus" ng-bind="resultStatus"></p>
+	</div>
+	</header>
+	 <div id="welcome">
+		
+	</div>
+	<div id="bookResult">
+		<img class="state" src="img/loading.gif" ng-model="loading" ng-hide="loading"/>
+		<h1 ng-model="noResult" ng-show="noResult"> No Result found </h1>
+		<img ng-model="noResult" ng-show="noResult" src="img/ohno.gif"/>
+		<div class="post" ng-repeat="book in books" ng-show="showResult">
+		<img ng-click="loadInfo(book.id)" class="photo" ng-src="{{book.volumeInfo.imageLinks.thumbnail}}"/>
+		<div id="info">
+		 <div class="title">Title: {{book.volumeInfo.title}}</div>
+		 <div class="author"><span>Author(s):</span><span ng-repeat="author in book.volumeInfo.authors">
+		 	{{author}}
+		 	<span ng-show="hasNext(book.volumeInfo.authors,author)">,</span></span>
+		 </div>
+		</div>
+	</div>
+	</div>
+	<div class="bookPreview"  ng-show="showPreview">
+		 <div class="post1" ng-show="showInfo"> <div class="title1" ng-bind="thisBook.volumeInfo.title"></div>
+		 <div id="pics1">
+				<img class="photo1" ng-src="{{thisBook.volumeInfo.imageLinks.thumbnail}}"/>
+		</div>
+		<div id="info1">
+		<div class="author1" ng-repeat = "author in thisBook.volumeInfo.authors">{{author}}
+		 	<span ng-show="hasNext(book.volumeInfo.authors,author)">,</span></div>
+		<div class="datePublished" ng-bind="thisBook.volumeInfo.datePublished"></div>
+		<div class="category" ng-repeat = "category in thisBook.volumeInfo.categories">{{category}}</div>
+		<div class="pageCount">{{thisBook.volumeInfo.pageCount}} Pages</div>
+		<div class="ratings" ng-show="!thisBook.volumeInfo.averageRating">Not Available</div>		
+		<p><img class="stars" ng-show="thisBook.volumeInfo.averageRating" ng-src="{{getRating(thisBook.volumeInfo.averageRating)}}" /></p>
+		<div class="ratingsCount" ng-show="thisBook.volumeInfo.ratingsCount">{{thisBook.volumeInfo.ratingsCount}} Review(s)</div>
+		</div><div class="description" ng-bind-html="thisBook.volumeInfo.description"></div>
+		<a ng-href="{{thisBook.accessInfo.webReaderLink}}" target="_blank">Preview this Book&gt;&gt;</a> 
+		</div>
+	</div>
+	<footer>
+		&copy Tolulope Komolafe| Andela
+	</footer>
+</body>
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>	
+	<script type="text/javascript" src="js/script.js"></script>
+</html>
